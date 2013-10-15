@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Temperatures of the last 24h</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Christian Stade-Schuldt">
+
+    <!-- Le styles -->
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+    </style>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="ico/favicon.ico">
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+         <div class="navbar-inner">
+           <div class="container-fluid">
+
+             <a class="brand" href="index.html">Home Temperatures</a>
+             <div class="nav-collapse collapse">
+               <ul class="nav">
+                 <li class="active"><a href="index.html">Home</a></li>
+               </ul>
+             </div><!--/.nav-collapse -->
+           </div>
+         </div>
+       </div>
+		
+		<form id="charts" action="#">
+       <div class="container-fluid">
+         <div class="row-fluid">
+           <div class="span2">
+             <div class="well sidebar-nav">
+               <ul class="nav nav-list">
+                 <li class="nav-header">Temperature</li>
+				  <select id="temperature"><option value="temperature3h">Last 3h</option>
+					<option value="temperature24h">Last 24h</option>
+					<option value="temperature48h">Last 2 Days</option>
+					<option value="temperature1w">Last Week</option>
+					<option value="temperature1m">Last Month</option>
+					<option value="temperature3m">Last 3 Month</option>
+					<option value="temperature1y">Last Year</option></select>
+				
+					
+               
+
+                  <li class="nav-header">Humidity</li>
+				   <select id="humidity"><option value="humid3h">Last 3h</option>
+				  <option value="humid24h">Last 24h</option>
+				  <option value="humid48h">Last 2 Days</option>
+				  <option value="humid1w">Last Week</option>
+				  <option value="humid1m">Last Month</option>
+				  <option value="humid3m">Last 3 Month</option>
+				  <option value="humid1y">Last Year</option></select>
+               
+                  	
+		  <li class="nav-header">Light</li>
+		        <select id="light"><option value="lux3h">Last 3h</option>
+				<option value="lux24h">Last 24h</option>
+				<option value="lux48h">Last 48h</option>
+				<option value="lux1w">Last Week</option>
+				<option value="lux1m">Last Month</option>
+				<option value="lux3m">Last 3 Month</option>
+				<option value="lux1y">Last Year</option></select>
+				</form>
+               </ul>
+             </div><!--/.well -->
+           </div><!--/span-->
+           <div class="span10">
+             <div id="content">
+
+              </div>
+           </div><!--/span-->
+         </div><!--/row-->
+
+         <hr>
+
+         <footer>
+           <p>&copy; onzyone</p>
+         </footer>
+
+       </div><!--/.fluid-container-->
+    <!-- Le javascript
+    ================================================== -->
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highcharts/2.3.5/highcharts.js"></script>
+    <script type="text/javascript" src="js/chart.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+
+		var urlStr;
+		var title;
+		var yAxis;
+		
+	$(document).on('change','#temperature', function(e) {
+	
+		urlStr = "data/" + $('#temperature option:selected').val() + ".xml";
+		title = "Temperature of the " + $('#temperature option:selected').text() ;
+		yAxis = "oC";
+
+	  	RenderChart(urlStr,title,yAxis);
+
+	});
+	
+	$(document).on('change','#humidity', function(e) {
+	
+		urlStr = "data/" + $('#humidity option:selected').val() + ".xml";
+		title = "Humidity of the " + $('#humidity option:selected').text();
+		yAxis = "%";
+	
+	  	RenderChart(urlStr,title,yAxis);
+
+	});
+	
+	$(document).on('change','#light', function(e) {
+	
+		urlStr = "data/" + $('#light option:selected').val() + ".xml";
+		title = "Light of the " + $('#light option:selected').text();
+		yAxis = "LUX";
+
+	  	RenderChart(urlStr,title,yAxis);
+
+	});
+	
+	 });
+	
+	function RenderChart(urlStr, title, yAxis) {
+		//alert("render chart called");
+        $.ajax({
+          type: "GET",
+          url:  urlStr,
+          dataType: "xml",
+          success: function(xml) {
+		   	  
+		
+			
+            var series = []
+			options.series = [];
+		//	options.series[0].data.length = 0;
+			
+
+            //define series
+            $(xml).find("entry").each(function() {
+              var seriesOptions = {
+                name: $(this).text(),
+                data: []
+              };
+              options.series.push(seriesOptions);
+            });
+
+            //populate with data
+            $(xml).find("row").each(function() {
+              var t = parseInt($(this).find("t").text()) * 1000
+
+              $(this).find("v").each(function(index) {
+                var v = parseFloat($(this).text())
+                v = v || null
+                if (v != null) {
+                  options.series[index].data.push([t, v])
+                };
+              });
+            });
+
+            options.title.text = title;
+			options.yAxis.title.text = yAxis;
+			//when humidity %
+			//when light LUX
+            $.each(series, function(index) {
+              options.series.push(series[index]);
+            });
+
+            //add sunrise and sunset
+            options.xAxis.plotBands = []
+            for (var i = 1; i >= 0; i--) {
+              var d = new Date();
+              d.setHours(0,0,0,0);
+              d.setDate(d.getDate()-i);
+              var sunrise = d.getTime()+computeSunrise(dayOfYear(), true);
+              var sunset = d.getTime()+computeSunrise(dayOfYear(), false);
+              options.xAxis.plotBands.push({
+                from: sunrise,
+                to: sunset,
+                color: '#FCFFC5'  
+              });  
+            };
+			
+			
+            
+			chart = new Highcharts.Chart(options);
+			
+			
+
+          }
+        });
+ 	}
+    </script>
+
+</body>
+</html>
+

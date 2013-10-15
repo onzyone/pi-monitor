@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<xport>
+  <meta>
+    <start>1381791240</start>
+    <step>360</step>
+    <end>1381791240</end>
+    <rows>31</rows>
+    <columns>1</columns>
+    <legend>
+      <entry>temperature</entry>
+    </legend>
+  </meta>
+  <data>
+    <row><t>1381791240</t><v>NaN</v></row>
+    <row><t>1381791600</t><v>NaN</v></row>
+    <row><t>1381791960</t><v>NaN</v></row>
+    <row><t>1381792320</t><v>NaN</v></row>
+    <row><t>1381792680</t><v>NaN</v></row>
+    <row><t>1381793040</t><v>NaN</v></row>
+    <row><t>1381793400</t><v>NaN</v></row>
+    <row><t>1381793760</t><v>NaN</v></row>
+    <row><t>1381794120</t><v>NaN</v></row>
+    <row><t>1381794480</t><v>NaN</v></row>
+    <row><t>1381794840</t><v>NaN</v></row>
+    <row><t>1381795200</t><v>NaN</v></row>
+    <row><t>1381795560</t><v>NaN</v></row>
+    <row><t>1381795920</t><v>NaN</v></row>
+    <row><t>1381796280</t><v>NaN</v></row>
+    <row><t>1381796640</t><v>NaN</v></row>
+    <row><t>1381797000</t><v>NaN</v></row>
+    <row><t>1381797360</t><v>NaN</v></row>
+    <row><t>1381797720</t><v>NaN</v></row>
+    <row><t>1381798080</t><v>NaN</v></row>
+    <row><t>1381798440</t><v>NaN</v></row>
+    <row><t>1381798800</t><v>NaN</v></row>
+    <row><t>1381799160</t><v>NaN</v></row>
+    <row><t>1381799520</t><v>NaN</v></row>
+    <row><t>1381799880</t><v>NaN</v></row>
+    <row><t>1381800240</t><v>NaN</v></row>
+    <row><t>1381800600</t><v>NaN</v></row>
+    <row><t>1381800960</t><v>1.9566181752e+01</v></row>
+    <row><t>1381801320</t><v>1.9500000000e+01</v></row>
+    <row><t>1381801680</t><v>1.9500000000e+01</v></row>
+    <row><t>1381802040</t><v>NaN</v></row>
+  </data>
+</xport>
